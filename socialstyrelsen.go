@@ -7,6 +7,7 @@ import (
 	"log"
 	"fmt"
 	"encoding/json"
+	"strings"
 )
 
 type GetCategoriesResult struct{
@@ -59,7 +60,9 @@ func getCategories(wiktionaryApiUrl url.URL, category string, continueToken stri
 	}
 
 	for _, word := range c.QueryResult.CategoryMembers {
-		fmt.Printf("%s\n", word.Title)
+		if !strings.HasPrefix(word.Title, "Kategori:") {
+			fmt.Printf("%s\n", word.Title)
+		}
 	}
 
 	if c.Continue.Token != "" {
