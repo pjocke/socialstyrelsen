@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 	"errors"
+	"os"
+	"bufio"
 )
 
 func getEnding(s string) (error, string) {
@@ -30,14 +32,19 @@ func getEnding(s string) (error, string) {
 }
 
 func main() {
-	words := []string{"ambulans", "pomerans", "hästsvans", "resistans", "kanelbulle", "höskulle", "bildrulle"}
-
-	for _ ,w := range(words) {
+	f, err := os.Open("./substantiv.txt")
+	if err != nil {
+		fmt.Printf("Unable to open file.")
+		return
+	}
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		w := scanner.Text()
 		err, end := getEnding(w)
 		if err != nil {
-			fmt.Printf("ERR: %s\n", err)
+			fmt.Printf("%s,%s\n", w, err)
 		}
 
-		fmt.Printf("%s\t\t%s\n", w, end)
+		fmt.Printf("%s,%s\n", w, end)
 	}
 }
